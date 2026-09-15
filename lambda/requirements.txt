@@ -1,1 +1,5 @@
-ask-sdk-core>=1.19.0,<2.0.0
+ask-sdk-core
+ask-sdk-model
+gtfs-realtime-bindings
+protobuf
+requests
