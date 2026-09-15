@@ -1,114 +1,61 @@
 # -*- coding: utf-8 -*-
-
-import logging
-
-import ask_sdk_core.utils as ask_utils
-from ask_sdk_core.dispatch_components import AbstractExceptionHandler, AbstractRequestHandler
-from ask_sdk_core.handler_input import HandlerInput
 from ask_sdk_core.skill_builder import SkillBuilder
-from ask_sdk_model import Response
+from ask_sdk_core.dispatch_components import AbstractRequestHandler, AbstractExceptionHandler
+from ask_sdk_core.utils import is_request_type, is_intent_name
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+sb = SkillBuilder()
 
 
 class LaunchRequestHandler(AbstractRequestHandler):
-    def can_handle(self, handler_input: HandlerInput) -> bool:
-        return ask_utils.is_request_type("LaunchRequest")(handler_input)
+    def can_handle(self, handler_input):
+        return is_request_type("LaunchRequest")(handler_input)
 
-    def handle(self, handler_input: HandlerInput) -> Response:
+    def handle(self, handler_input):
+        speech = "Ciao. Chiedi: quando passa il bus per scuola."
+        return handler_input.response_builder.speak(speech).ask(speech).response
+
+
+class ProssimoBusScuolaHandler(AbstractRequestHandler):
+    def can_handle(self, handler_input):
+        return is_intent_name("ProssimoBusScuolaIntent")(handler_input)
+
+    def handle(self, handler_input):
+        speech = "La skill funziona. La ricerca del prossimo autobus verra aggiunta dopo."
+        return handler_input.response_builder.speak(speech).response
+
+
+class HelpHandler(AbstractRequestHandler):
+    def can_handle(self, handler_input):
+        return is_intent_name("AMAZON.HelpIntent")(handler_input)
+
+    def handle(self, handler_input):
+        speech = "Puoi chiedere: quando passa il bus per scuola."
+        return handler_input.response_builder.speak(speech).ask(speech).response
+
+
+class CancelStopHandler(AbstractRequestHandler):
+    def can_handle(self, handler_input):
         return (
-            handler_input.response_builder
-            .speak(
-                "Benvenuto in Autobus Toscana. "
-                "Puoi dire prova autobus, oppure chiedere aiuto."
-            )
-            .ask("Prova a dire: prova autobus.")
-            .response
+            is_intent_name("AMAZON.CancelIntent")(handler_input)
+            or is_intent_name("AMAZON.StopIntent")(handler_input)
         )
 
-
-class ProvaAutobusIntentHandler(AbstractRequestHandler):
-    def can_handle(self, handler_input: HandlerInput) -> bool:
-        return ask_utils.is_intent_name("ProvaAutobusIntent")(handler_input)
-
-    def handle(self, handler_input: HandlerInput) -> Response:
-        return (
-            handler_input.response_builder
-            .speak(
-                "La skill Autobus Toscana funziona. "
-                "Nel prossimo passaggio collegheremo i dati realtime ufficiali di Autolinee Toscane."
-            )
-            .response
-        )
+    def handle(self, handler_input):
+        return handler_input.response_builder.speak("Alla prossima.").response
 
 
-class HelpIntentHandler(AbstractRequestHandler):
-    def can_handle(self, handler_input: HandlerInput) -> bool:
-        return ask_utils.is_intent_name("AMAZON.HelpIntent")(handler_input)
-
-    def handle(self, handler_input: HandlerInput) -> Response:
-        return (
-            handler_input.response_builder
-            .speak("Puoi dire: prova autobus.")
-            .ask("Prova a dire: prova autobus.")
-            .response
-        )
-
-
-class StopIntentHandler(AbstractRequestHandler):
-    def can_handle(self, handler_input: HandlerInput) -> bool:
-        return (
-            ask_utils.is_intent_name("AMAZON.CancelIntent")(handler_input)
-            or ask_utils.is_intent_name("AMAZON.StopIntent")(handler_input)
-        )
-
-    def handle(self, handler_input: HandlerInput) -> Response:
-        return handler_input.response_builder.speak("Va bene, a presto.").response
-
-
-class FallbackIntentHandler(AbstractRequestHandler):
-    def can_handle(self, handler_input: HandlerInput) -> bool:
-        return ask_utils.is_intent_name("AMAZON.FallbackIntent")(handler_input)
-
-    def handle(self, handler_input: HandlerInput) -> Response:
-        return (
-            handler_input.response_builder
-            .speak("Non ho capito. Puoi dire: prova autobus, oppure chiedere aiuto.")
-            .ask("Che cosa vuoi fare?")
-            .response
-        )
-
-
-class SessionEndedRequestHandler(AbstractRequestHandler):
-    def can_handle(self, handler_input: HandlerInput) -> bool:
-        return ask_utils.is_request_type("SessionEndedRequest")(handler_input)
-
-    def handle(self, handler_input: HandlerInput) -> Response:
-        return handler_input.response_builder.response
-
-
-class CatchAllExceptionHandler(AbstractExceptionHandler):
-    def can_handle(self, handler_input: HandlerInput, exception: Exception) -> bool:
+class AllExceptionHandler(AbstractExceptionHandler):
+    def can_handle(self, handler_input, exception):
         return True
 
-    def handle(self, handler_input: HandlerInput, exception: Exception) -> Response:
-        logger.exception(exception)
-        return (
-            handler_input.response_builder
-            .speak("Si è verificato un problema. Riprova tra poco.")
-            .ask("Riprova tra poco.")
-            .response
-        )
+    def handle(self, handler_input, exception):
+        return handler_input.response_builder.speak("Si e verificato un problema. Riprova tra poco.").response
 
 
-sb = SkillBuilder()
 sb.add_request_handler(LaunchRequestHandler())
-sb.add_request_handler(ProvaAutobusIntentHandler())
-sb.add_request_handler(HelpIntentHandler())
-sb.add_request_handler(StopIntentHandler())
-sb.add_request_handler(FallbackIntentHandler())
-sb.add_request_handler(SessionEndedRequestHandler())
-sb.add_exception_handler(CatchAllExceptionHandler())
+sb.add_request_handler(ProssimoBusScuolaHandler())
+sb.add_request_handler(HelpHandler())
+sb.add_request_handler(CancelStopHandler())
+sb.add_exception_handler(AllExceptionHandler())
 
-lambda_handler = sb.lambda_handler()
+handler = sb.lambda_handler()
