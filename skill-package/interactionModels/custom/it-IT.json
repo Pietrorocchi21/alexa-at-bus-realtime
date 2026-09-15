@@ -1,0 +1,39 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "autobus toscana",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.FallbackIntent",
+          "samples": []
+        },
+        {
+          "name": "ProvaAutobusIntent",
+          "slots": [],
+          "samples": [
+            "prova autobus",
+            "fai una prova",
+            "test autobus"
+          ]
+        }
+      ],
+      "types": []
+    },
+    "dialog": {
+      "intents": []
+    },
+    "prompts": []
+  }
+}

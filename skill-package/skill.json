@@ -1,0 +1,37 @@
+{
+  "manifest": {
+    "publishingInformation": {
+      "locales": {
+        "it-IT": {
+          "name": "AT Bus Realtime",
+          "summary": "Informazioni realtime di Autolinee Toscane.",
+          "description": "Skill personale in sviluppo per consultare informazioni realtime di Autolinee Toscane.",
+          "examplePhrases": [
+            "Alexa, apri autobus toscana",
+            "Alexa, chiedi ad autobus toscana di fare una prova"
+          ],
+          "keywords": [
+            "autobus",
+            "toscana",
+            "trasporto pubblico"
+          ]
+        }
+      },
+      "isAvailableWorldwide": false,
+      "testingInstructions": "Skill personale in fase di sviluppo.",
+      "category": "LOCAL",
+      "distributionCountries": [
+        "IT"
+      ]
+    },
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "sourceDir": "lambda"
+        },
+        "interfaces": []
+      }
+    },
+    "manifestVersion": "1.0"
+  }
+}
