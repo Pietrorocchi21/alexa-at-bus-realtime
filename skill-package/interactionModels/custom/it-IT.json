@@ -1,7 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "autobus toscana",
+      "invocationName": "at bus",
       "intents": [
         {
           "name": "AMAZON.CancelIntent",
@@ -16,24 +16,25 @@
           "samples": []
         },
         {
-          "name": "AMAZON.FallbackIntent",
+          "name": "AMAZON.NavigateHomeIntent",
           "samples": []
         },
         {
-          "name": "ProvaAutobusIntent",
-          "slots": [],
+          "name": "ProssimoBusScuolaIntent",
           "samples": [
-            "prova autobus",
-            "fai una prova",
-            "test autobus"
-          ]
+            "quando passa il bus per scuola",
+            "quando passa il prossimo autobus per scuola",
+            "a che ora passa il bus per scuola",
+            "quando arriva l autobus per scuola",
+            "quando passa il bus per Caiani",
+            "quando passa l autobus per Caiani",
+            "orario del bus per scuola",
+            "dimmi quando passa il bus per scuola"
+          ],
+          "slots": []
         }
       ],
       "types": []
-    },
-    "dialog": {
-      "intents": []
-    },
-    "prompts": []
+    }
   }
 }
